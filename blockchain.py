@@ -17,21 +17,21 @@ class Blockchain:
             self.get_latest_block())
 
         block = Block(data, len(self.chain)+1, previous_hash)
-        proof_of_work = self.find_proof_of_work(block)
-        block.seal(proof_of_work)
+        nonce = self.find_nonce(block)
+        block.seal(nonce)
         self.chain.append(block)
 
-    def find_proof_of_work(self, block):
+    def find_nonce(self, block):
         cloned_block = block.clone()
-        new_proof = 1
-        check_proof = False
-        while check_proof is False:
-            cloned_block.proof_of_work = new_proof
+        new_nonce = 1
+        check_nonce = False
+        while check_nonce is False:
+            cloned_block.nonce = new_nonce
             if self.hash(cloned_block)[:self.target] == self.target_in_string:
-                check_proof = True
+                check_nonce = True
             else:
-                new_proof += 1
-        return new_proof
+                new_nonce += 1
+        return new_nonce
 
     def hash(self, hashedObject):
         block_in_string = to_json_string(hashedObject).encode()

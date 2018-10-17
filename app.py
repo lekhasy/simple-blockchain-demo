@@ -42,12 +42,20 @@ def is_valid():
 
 
 @app.route('/add_data', methods=['POST'])
-def invalidate():
+def add_data():
     data = request.form['data']
     pendingData.append(data)
     return jsonify({
         "message": "data added",
         "pending data": pendingData
+    }), 200
+
+
+@app.route('/invalidate', methods=['POST'])
+def invalidate():
+    block_chain.chain[1].data = "tampered data"
+    return jsonify({
+        "message": "the data in block 2 has been be tampered"
     }), 200
 
 
